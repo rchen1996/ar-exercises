@@ -9,6 +9,10 @@ class Store < ActiveRecord::Base
 
   validate :must_carry_mens_or_womens
 
+  before_destroy :check_store_employees_size
+
+  private
+
   def must_carry_mens_or_womens
     if !mens_apparel && !womens_apparel
       errors.add(
@@ -19,6 +23,14 @@ class Store < ActiveRecord::Base
         :womens_apparel,
         "cannot be false/nil if store also doesn't carry men's apparel",
       )
+    end
+  end
+
+  def check_store_employees_size
+    employees_of_store = Employee.where(store_id: self.id).count
+    if employees_of_store >= 1
+      errors[:base] << 'cannot delete a store that has 1 or more employees'
+      return false
     end
   end
 end
