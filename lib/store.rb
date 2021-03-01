@@ -7,6 +7,8 @@ class Store < ActiveRecord::Base
               greater_than_or_equal_to: 0,
             }
 
+  validate :must_carry_mens_or_womens
+
   def must_carry_mens_or_womens
     if mens_apparel == false && womens_apparel == false
       errors.add(
@@ -16,6 +18,4 @@ class Store < ActiveRecord::Base
       )
     end
   end
-
-  validate must_carry_mens_or_womens
 end
