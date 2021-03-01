@@ -16,7 +16,7 @@ ActiveRecord::Base.establish_connection(
   port: 5432,
   pool: 5,
   encoding: 'unicode',
-  min_messages: 'error'
+  min_messages: 'error',
 )
 puts 'CONNECTED'
 
@@ -24,7 +24,9 @@ puts 'Setting up Database (recreating tables) ...'
 
 ActiveRecord::Schema.define do
   drop_table :stores if ActiveRecord::Base.connection.table_exists?(:stores)
-  drop_table :employees if ActiveRecord::Base.connection.table_exists?(:employees)
+  if ActiveRecord::Base.connection.table_exists?(:employees)
+    drop_table :employees
+  end
   create_table :stores do |t|
     t.column :name, :string
     t.column :annual_revenue, :integer
@@ -37,6 +39,7 @@ ActiveRecord::Schema.define do
     table.column :first_name, :string
     table.column :last_name, :string
     table.column :hourly_rate, :integer
+    table.column :password, :string
     table.timestamps null: false
   end
 end
