@@ -38,4 +38,8 @@ yaletown =
 end
 
 @womens_stores =
-  Store.where(['womens_apparel = ? and annual_revenue < ?', 'true', '1000000'])
+  Store.where(['womens_apparel = ? and annual_revenue < ?', true, 1_000_000])
+
+@womens_stores.each do |store|
+  puts "#{store.name}'s annual revenue is #{store.annual_revenue}"
+end
