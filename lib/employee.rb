@@ -13,11 +13,12 @@ class Employee < ActiveRecord::Base
             }
   validates :store_id, presence: true
 
-  before_create :set_employee_password
+  after_create :set_employee_password
 
   private
 
   def set_employee_password
     self.password = SecureRandom.hex.slice!(2..9)
+    self.save
   end
 end
